@@ -3,15 +3,30 @@ package com.teamcreative.javamailapidemo;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import static android.os.Environment.*;
 
 public class JavaMailAPI extends AsyncTask<Void,Void,Void>  {
 
@@ -21,7 +36,6 @@ public class JavaMailAPI extends AsyncTask<Void,Void,Void>  {
     //implementation files('libs/mail.jar')
 
     //Need INTERNET permission
-
     //Variables
     private Context mContext;
     private Session mSession;
@@ -89,30 +103,32 @@ public class JavaMailAPI extends AsyncTask<Void,Void,Void>  {
             mm.addRecipient(Message.RecipientType.TO, new InternetAddress(mEmail));
             //Adding subject
             mm.setSubject(mSubject);
-            //Adding message
-            mm.setText(mMessage);
-            //Sending email
-            Transport.send(mm);
+                //Adding message
+             mm.setText(mMessage);
 
+//
 //            BodyPart messageBodyPart = new MimeBodyPart();
 //
-//            messageBodyPart.setText(message);
+//            messageBodyPart.setText(mMessage);
 //
 //            Multipart multipart = new MimeMultipart();
 //
 //            multipart.addBodyPart(messageBodyPart);
 //
-//            messageBodyPart = new MimeBodyPart();
+//            MimeBodyPart attachpart = new MimeBodyPart();
 //
-//            DataSource source = new FileDataSource(filePath);
+//            String filePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/pdffiles/02012010.pdf";
+////            DataSource source = new FileDataSource(filePath);
+////
+////            messageBodyPart.setDataHandler(new DataHandler(source));
+////
+////            messageBodyPart.setFileName(filePath);
 //
-//            messageBodyPart.setDataHandler(new DataHandler(source));
 //
-//            messageBodyPart.setFileName(filePath);
-//
-//            multipart.addBodyPart(messageBodyPart);
-
+//            attachpart.attachFile(filePath);
+//            multipart.addBodyPart(attachpart);
 //            mm.setContent(multipart);
+            Transport.send(mm);
 
         } catch (MessagingException e) {
             e.printStackTrace();
